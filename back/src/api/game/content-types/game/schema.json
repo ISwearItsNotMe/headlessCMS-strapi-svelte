@@ -32,10 +32,6 @@
       "type": "integer",
       "required": true
     },
-    "description": {
-      "type": "blocks",
-      "required": true
-    },
     "images": {
       "type": "media",
       "multiple": true,
@@ -55,6 +51,9 @@
       "relation": "manyToMany",
       "target": "api::library.library",
       "inversedBy": "games"
+    },
+    "description": {
+      "type": "text"
     }
   }
 }

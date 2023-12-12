@@ -379,7 +379,6 @@ export interface ApiGameGame extends Schema.CollectionType {
     maxPlayers: Attribute.Integer & Attribute.Required;
     time: Attribute.Integer & Attribute.Required;
     minYear: Attribute.Integer & Attribute.Required;
-    description: Attribute.Blocks & Attribute.Required;
     images: Attribute.Media;
     tags: Attribute.Relation<'api::game.game', 'manyToMany', 'api::tag.tag'>;
     libraries: Attribute.Relation<
@@ -387,6 +386,7 @@ export interface ApiGameGame extends Schema.CollectionType {
       'manyToMany',
       'api::library.library'
     >;
+    description: Attribute.Text;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;

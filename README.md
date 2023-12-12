@@ -19,6 +19,7 @@ Dans un premier temps vous devez cloner ce repo sur votre machine via :
 
     git clone https://github.com/ISwearItsNotMe/headlessCMS-strapi-svelte.git
 
+---------
 Il vous faut définir :
 • Un sujet => Game Library
 • La structure, les "objets" du site headless. => Done

@@ -1,3 +1,12 @@
 {
-	"/": []
+	"/": [],
+	"/games": [
+		"src/routes/games/+page.server.ts"
+	],
+	"/libraries": [
+		"src/routes/libraries/+page.server.ts"
+	],
+	"/tags": [
+		"src/routes/tags/+page.server.ts"
+	]
 }
