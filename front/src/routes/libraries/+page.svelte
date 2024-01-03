@@ -2,7 +2,9 @@
 	import type { PageData } from './$types';
 	export let data: PageData;
 	let selectedLibrary: number = 0;
+	let selectedGames: Array<number> = [];
 
+	console.log(data.libraries);
 	function selectLibrary(libraryId: number) {
 		selectedLibrary = libraryId;
 	}
@@ -15,7 +17,24 @@
 			};
 		}) => library.id === selectedLibrary
 	);
-	console.log(data.libraries);
+	$: games = data.games;
+
+	function isSelectedGame(gameId: number) {
+		return (
+			selectedLibraryData &&
+			selectedLibraryData.attributes.games.data.some((g: any) => g.id === gameId)
+		);
+	}
+	let previousSelectedLibrary = null;
+
+	$: if (selectedLibrary !== previousSelectedLibrary) {
+		if (selectedLibraryData) {
+			selectedGames = selectedLibraryData.attributes.games.data.map((g: any) => g.id);
+		} else {
+			selectedGames = [];
+		}
+		previousSelectedLibrary = selectedLibrary;
+	}
 </script>
 
 <div class="libraries">
@@ -54,6 +73,21 @@
 					required
 					value={selectedLibraryData.attributes.name}
 				/>
+				<div style="display: grid; grid-template-rows: 1fr 1fr; grid-template-columns: 1fr 1fr; grid-gap: 1vw;">
+					{#each games as game}
+						<div style="display: flex;">
+							<input
+								type="checkbox"
+								name="games"
+								bind:group={selectedGames}
+								value={game.id}
+								checked={isSelectedGame(game.id)}
+								id={`game-${game.id}`}
+							/>
+							<label for={`game-${game.id}`}>{game.attributes.name}</label>
+						</div>
+					{/each}
+				</div>
 			{:else}
 				<!-- Afficher le formulaire pour créer un nouveau jeu -->
 				<h2>New library</h2>

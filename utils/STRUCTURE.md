@@ -75,3 +75,77 @@ Ici nous avons une relation _ManyToMany_ entre un _Game_ et une _Library_, ce qu
 Ici nous avons une relation _ManyToMany_ entre un _Game_ et un _Tag_, ce qui signifie qu'un _Game_ peut avoir plusieurs _Tag_ et qu'un _Tag_ peut appartenir à plusieurs _Game_
 
 # ==ENGLISH VERSION==
+
+## Framework
+
+For this project, we will primarily use Strapi to manage our API and, by extension, our entities.
+
+## Entities
+
+Our project has four distinct entities: users, games, libraries, and tags.
+
+### _User_ (users)
+
+The User represents you, or anyone else who tries to join your application.
+
+A User consists of these elements:
+
+    id: Number
+    username: Text
+    email: Email
+    password: Password
+    confirmed: Boolean
+    blocked: Boolean
+
+The types Email and Password are unique to Strapi. They allow for easier verification and configuration of how these fields should be treated in the database.
+
+### _Game_ (games)
+
+The Game refers to the different games that we can encounter.
+
+A Game consists of these elements:
+
+    id: Number
+    name: Text
+    description: Rich Text
+    minPlayers: Number
+    maxPlayers: Number
+    time: Number
+    minYear: Number
+    images: Media[]
+
+Rich Text and Media are also unique to Strapi. They are used to manage long text and media (photos, videos, etc.), respectively.
+
+### _Library_ (libraries)
+
+The Library refers to the different libraries a user can create to store various games.
+
+A Library consists of these elements:
+
+    id: Number
+    name: Text
+
+### _Tag_ (tags)
+
+The Tag refers to the different "categories" a game can have (family, asymmetric, etc.).
+
+A Tag consists of these elements:
+
+    id: Number
+    name: Text
+
+## Relations
+
+To make everything work, some of our entities are related to others.
+
+### _User--Library_
+
+This OneToMany relationship highlights the fact that a User can have multiple Libraries, but a Library can only belong to one User.
+
+### _Game--Library_
+
+Here we have a ManyToMany relationship between a Game and a Library, meaning that a Game can be in multiple Libraries, and a Library can have multiple Games.
+
+### _Game--Tag_
+
+Here we have a ManyToMany relationship between a Game and a Tag, meaning that a Game can have multiple Tags, and a Tag can belong to multiple Games.

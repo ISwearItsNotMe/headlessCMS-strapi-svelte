@@ -13,27 +13,38 @@ export const load: PageServerLoad = async () => {
 
 export const actions: Actions = {
 	createGame: async ({ request }) => {
-		const { name, description, minYear, minPlayers, maxPlayers, time, tags } = Object.fromEntries(
-			await request.formData()
-		) as {
-			name: string;
-			description: string;
-			minYear: string;
-			minPlayers: string;
-			maxPlayers: string;
-			time: string;
-			tags: string;
+		const req = await request.formData();
+
+		// Initialize formData with keys for all expected fields
+		const formData = {
+			name: '',
+			description: '',
+			minPlayers: 0,
+			maxPlayers: 0,
+			minYear: 0,
+			time: 0,
+			tags: []
 		};
 
+		for (const [key, value] of req.entries()) {
+			if (key === 'tags') {
+				// Accumulate tags values into an array
+				formData.tags.push(parseInt(value, 10)); // Convert to integer if tag IDs are numeric
+			} else {
+				// For other fields, just set the value
+				formData[key] = value;
+			}
+		}
 		try {
 			const response = await axios.post('http://localhost:1337/api/games', {
 				data: {
-					name,
-					description,
-					minYear,
-					minPlayers,
-					maxPlayers,
-					time
+					name: formData.name,
+					description: formData.description,
+					minYear: formData.minYear,
+					minPlayers: formData.minPlayers,
+					maxPlayers: formData.maxPlayers,
+					time: formData.time,
+					tags: formData.tags
 				}
 			});
 			// Gérer la réponse si nécessaire
@@ -65,19 +76,37 @@ export const actions: Actions = {
 
 	updateGame: async ({ request, url }) => {
 		const id = url.searchParams.get('id');
-		const formData = Object.fromEntries(await request.formData());
+		const req = await request.formData();
+		const formData = {
+			name: '',
+			description: '',
+			minYear: 0,
+			minPlayers: 0,
+			maxPlayers: 0,
+			time: 0,
+			tags: []
+		};
 
-		// Conversion des valeurs en nombres si nécessaire
+		for (const [key, value] of req.entries()) {
+			if (key === 'tags') {
+				// Accumulate tags values into an array
+				formData.tags.push(parseInt(value, 10)); // Convert to integer if tag IDs are numeric
+			} else {
+				// For other fields, just set the value
+				formData[key] = value;
+			}
+		}
+
+		console.log('formData', formData);
 		const updatedData = {
 			name: formData.name,
 			description: formData.description,
 			minYear: formData.minYear,
 			minPlayers: formData.minPlayers,
 			maxPlayers: formData.maxPlayers,
-			time: formData.time
+			time: formData.time,
+			tags: formData.tags
 		};
-
-		console.log(updatedData);
 
 		try {
 			const response = await axios.put(`http://localhost:1337/api/games/${id}`, {

@@ -20,7 +20,13 @@
 			};
 		}) => game.id === selectedGame
 	);
-	console.log(data.games);
+	$: tags = data.tags;
+
+	function isSelectedTag(tagId: number) {
+		return (
+			selectedGameData && selectedGameData.attributes.tags.data.some((t: any) => t.id === tagId)
+		);
+	}
 </script>
 
 <div class="games">
@@ -32,15 +38,17 @@
 		<div class="scroll">
 			{#each data.games as game}
 				<div class="game" on:click={() => selectGame(game.id)}>
-					<img
-						src={`http://localhost:1337${game.attributes.images.data[0].attributes.formats.small.url}`}
-						alt={game.attributes.name}
-					/>
+					{#if game.attributes.images.data}
+						<img
+							src={`http://localhost:1337${game.attributes.images.data[0].attributes.formats.small.url}`}
+							alt={game.attributes.name}
+						/>
+					{/if}
 					<h1>{game.attributes.name}</h1>
 					<p>{game.attributes.description}</p>
 					<div class="tags">
 						{#each game.attributes.tags.data as tag}
-							<span>{tag.attributes.name}</span>
+							<span style="margin-left: 1vw;">{tag.attributes.name}</span>
 						{/each}
 					</div>
 				</div>
@@ -114,11 +122,11 @@
 					value={selectedGameData.attributes.time}
 				/>
 				<label for="tags">Tags</label>
-				<div>
-					{#each selectedGameData.attributes.tags.data as tag}
-						<span>{tag.attributes.name}</span>
+				<select name="tags" id="tags" multiple>
+					{#each tags as tag}
+						<option value={tag.id} selected={isSelectedTag(tag.id)}>{tag.attributes.name}</option>
 					{/each}
-				</div>
+				</select>
 			{:else}
 				<!-- Afficher le formulaire pour créer un nouveau jeu -->
 				<h2>New game</h2>
@@ -146,6 +154,12 @@
 				<input type="number" name="minYear" id="minYear" placeholder="Minimum age" required />
 				<label for="time">Time</label>
 				<input type="number" name="time" id="time" placeholder="Time" required />
+				<label for="tags">Tags</label>
+				<select name="tags" id="tags" multiple>
+					{#each tags as tag}
+						<option value={tag.id}>{tag.attributes.name}</option>
+					{/each}
+				</select>
 			{/if}
 			{#if selectedGame !== 0}
 				<button type="submit">Edit Game</button>

@@ -3,9 +3,11 @@ import type { Actions, PageServerLoad } from './$types';
 import { fail } from '@sveltejs/kit';
 
 export const load: PageServerLoad = async () => {
-	const libraries = await axios.get('http://localhost:1337/api/libraries');
+	const libraries = await axios.get('http://localhost:1337/api/libraries?populate=games');
+	const games = await axios.get('http://localhost:1337/api/games');
 	return {
-		libraries: libraries.data.data
+		libraries: libraries.data.data,
+		games: games.data.data
 	};
 };
 
@@ -50,11 +52,22 @@ export const actions: Actions = {
 
 	updateLibrary: async ({ request, url }) => {
 		const id = url.searchParams.get('id');
-		const formData = Object.fromEntries(await request.formData());
+		const req = await request.formData();
+		const formData = {
+			name: '',
+			games: []
+		};
+		for (const [key, value] of req.entries()) {
+			if (key === 'games') {
+				formData.games.push(parseInt(value, 10));
+			} else {
+				formData[key] = value;
+			}
+		}
 
-		// Conversion des valeurs en nombres si nécessaire
 		const updatedData = {
-			name: formData.name
+			name: formData.name,
+			games: formData.games
 		};
 		try {
 			const response = await axios.put(`http://localhost:1337/api/libraries/${id}`, {
