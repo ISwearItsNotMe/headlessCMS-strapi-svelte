@@ -42,6 +42,8 @@ Si l'application ne fonctionne pas, vous devrez peut-être changer les paramètr
 4. Ensuite, choisissez l'option "Select All" sur toutes les entités Game/Library/Tag
 5. N'oubliez pas de sauvegarder !
 
+Si vous avez une erreur 500 sur le front, n'oubliez pas de vous connecter à Strapi en premier temps avec les identifiants fournis !
+
 # ==ENGLISH VERSION==
 
 # DigiGame - Documentation
@@ -85,3 +87,5 @@ If the application does not work, you may need to change the role settings for t
 3. Click on "Edit" for the "Public" role.
 4. Then, choose the "Select All" option for all the Game/Library/Tag entities.
 5. Don't forget to save!
+
+If you have an error 500 on the front, do not forget to connect to Strapi first with the giving identifier
